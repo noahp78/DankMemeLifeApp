@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="life.dankmeme.dankmeme.PostFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/post_mainComponent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                app:srcCompat="@mipmap/ic_launcher" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/post_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DEBUG YOU SHOULD NOT SEE THIS"
+            android:textColor="Black"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/post_upvote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/post_mainComponent"
+            android:text="upvote" />
+
+        <Button
+            android:id="@+id/post_downvote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Downvote"
+            android:layout_below="@+id/post_mainComponent"
+            android:layout_toRightOf="@+id/post_upvote"
+            android:layout_toEndOf="@+id/post_upvote" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/post_mainComponent"
+            app:srcCompat="@android:drawable/ic_menu_share" />
+    </RelativeLayout>
+
+</FrameLayout>
