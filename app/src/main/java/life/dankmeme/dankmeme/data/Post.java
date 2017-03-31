@@ -1,5 +1,7 @@
 package life.dankmeme.dankmeme.data;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -238,5 +240,14 @@ public class Post {
 
     public void setEffectiveVoteShouldbe(Double effectiveVoteShouldbe) {
         this.effectiveVoteShouldbe = effectiveVoteShouldbe;
+    }
+    private Bitmap postImage;
+
+    public Bitmap getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(Bitmap postImage) {
+        this.postImage = postImage;
     }
 }

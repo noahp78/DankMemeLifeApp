@@ -6,14 +6,18 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import com.koushikdutta.ion.Ion;
 
 import java.util.List;
 
@@ -57,10 +61,11 @@ public class PostListAdapter extends ArrayAdapter<Post> {
     @Override
     public View getView(int position, View convertView,
             ViewGroup parent) {
-            if(position==getCount() && hasMore){
+            if((position-2) > getCount() && hasMore){
                 DataContainer.getInstance(null).fetchPost(position+1);
             }
             Post post = getItem(position);
+
             Log.i("DankMeme", "Inflating post with title " + post.getTitle() );
         if(convertView==null){
          convertView=View.inflate(this.getContext(),R.layout.fragment_post,null);
@@ -71,17 +76,45 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         Button downvoteButton = (Button) convertView.findViewById(R.id.post_downvote);
         upvoteButton.setText("^ " + post.getUpvotes());
         downvoteButton.setText("v " + post.getDownvotes());
-        RelativeLayout mainPostContent = (RelativeLayout) convertView.findViewById(R.id.post_mainComponent);
         VideoView videoView = (VideoView)convertView.findViewById(R.id.videoViewPost);
         ImageView imageView = (ImageView)convertView.findViewById(R.id.imageViewPost);
 
         if (post.getType().equalsIgnoreCase("0")) {
-            videoView.setVideoURI(Uri.parse(post.getVideo()));
-            imageView.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
+            MediaController mediaController = new MediaController(this.getContext());
+            mediaController.setAnchorView(videoView);
+            mediaController.setVisibility(View.VISIBLE);
+            videoView.setMediaController(mediaController);
+            videoView.setVideoURI(Uri.parse(post.getVideo()));
+            videoView.start();
+
+            videoView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                        VideoView vw = (VideoView) v;
+                        Log.i("DankVideo", "Changing state of " + vw.isPlaying());
+                        if (vw.isPlaying()) {
+                            vw.pause();
+                        } else {
+                            vw.start();
+                            vw.resume();
+                        }
+                    }
+                    return true;
+                }
+            });
+            mediaController.setVisibility(View.INVISIBLE);
+            videoView.pause();
         } else {
+            Ion.with(imageView)
+                    .placeholder(R.drawable.ic_dashboard_black_24dp)
+                    .error(R.drawable.ic_home_black_24dp)
+                    .load(post.getVideo());
             imageView.setVisibility(View.VISIBLE);
-            videoView.setVisibility(View.INVISIBLE);
+            videoView.setVisibility(View.GONE);
+
         }
             return convertView;
     }
